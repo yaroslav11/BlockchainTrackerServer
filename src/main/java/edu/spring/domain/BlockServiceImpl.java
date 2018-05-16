@@ -34,4 +34,9 @@ public class BlockServiceImpl implements BlockService {
     public long getLattestIndex() {
         return dao.getLatestIndex();
     }
+
+    @Override
+    public boolean checkExistenceByInfo(String data) {
+        return dao.checkExistenceByInfo(data);
+    }
 }

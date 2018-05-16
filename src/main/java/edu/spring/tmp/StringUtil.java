@@ -1,4 +1,4 @@
-package edu.spring.core;
+package edu.spring.tmp;
 
 import com.google.gson.GsonBuilder;
 

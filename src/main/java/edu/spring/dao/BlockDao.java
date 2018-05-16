@@ -13,4 +13,6 @@ public interface BlockDao {
     void delete(long id);
 
     long getLatestIndex();
+
+    boolean checkExistenceByInfo(String data);
 }

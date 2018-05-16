@@ -11,4 +11,6 @@ public interface BlockService {
     void delete (long accountId);
 
     long getLattestIndex();
+
+    boolean checkExistenceByInfo(String info);
 }

@@ -71,4 +71,8 @@ public class Block {
     public void setNonce(long nonce) {
         this.nonce = nonce;
     }
+
+    public String getBlockWithoutHashAsString(){
+        return (getId()+" "+getPrevious_hash()+" "+getInfo()+getNonce());
+    }
 }

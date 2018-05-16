@@ -21,7 +21,11 @@ public class BlockDaoImpl implements BlockDao {
     private static final String DELETE_ACCOUNT =
             "DELETE FROM chain WHERE id=:id";
     private static final String LATEST_INDEX =
-            "SELECT MAX(id) FROM chain ";
+            "SELECT MAX(id) as id FROM chain";
+    private static final String INSERT_LINE =
+            "INSERT INTO chain (id, hash, previous_hash, info, nonce) VALUES (?, ?, ?, ?, ?)";
+    private static final String CHECK_BLOCK_BY_INFO =
+            "SELECT * FROM chain WHERE info=:info";
 
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcOperations namedJdbcTemplate;
@@ -49,19 +53,10 @@ public class BlockDaoImpl implements BlockDao {
 
     @Override
     public Block insert(Block block) {
-        Map<String, Object> params = new HashMap<>();
+        jdbcTemplate.update(INSERT_LINE,
+                new Object[] {block.getId(), block.getHash(), block.getPrevious_hash(),
+                block.getInfo(), block.getNonce()});
 
-        params.put("id", block.getId());
-        params.put("hash", block.getHash());
-        params.put("previous_hash", block.getPrevious_hash());
-        params.put("info", block.getInfo());
-        params.put("nonce", block.getNonce());
-
-        long newId = new SimpleJdbcInsert(jdbcTemplate)
-                .withTableName("chain")
-//                .usingGeneratedKeyColumns("id")
-                .executeAndReturnKey(params).longValue();
-        block.setId(newId);
         return block;
     }
 
@@ -87,6 +82,13 @@ public class BlockDaoImpl implements BlockDao {
         return namedJdbcTemplate.query(
                 LATEST_INDEX, (resultSet, i) -> resultSet.getLong("id")
         ).stream().findFirst().orElse(0L);
+    }
+
+    @Override
+    public boolean checkExistenceByInfo(String info) {
+        return namedJdbcTemplate.query(
+                CHECK_BLOCK_BY_INFO, Collections.singletonMap("info", info), (resultSet, i) -> true
+        ).stream().findFirst().orElse(false);
     }
 }
 

@@ -1,4 +1,4 @@
-package edu.spring.core;
+package edu.spring.tmp;
 
 public class PrivateData {
     private String userId;

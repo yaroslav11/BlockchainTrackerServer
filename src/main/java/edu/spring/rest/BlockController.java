@@ -1,5 +1,6 @@
 package edu.spring.rest;
 
+import edu.spring.core.ChainHelper;
 import edu.spring.domain.BlockService;
 import edu.spring.domain.model.Block;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,34 +41,63 @@ public class BlockController {
         return BlockDTO.toDto(block);
     }
 
-    // add new block
-    @RequestMapping(
-        value = "/add_block",
-        method = RequestMethod.POST
-    )
-    public @ResponseBody
-    BlockDTO create(
-        @RequestBody BlockDTO dto
-    ) {
-        Block block = BlockDTO.toDomainObject(dto);
-        Block blockWithId = service.create(block);
-        return BlockDTO.toDto(blockWithId);
-    }
+//    // add new block
+//    @RequestMapping(
+//        value = "/add_block",
+//        method = RequestMethod.POST
+//    )
+//    public @ResponseBody
+//    BlockDTO create(
+//        @RequestBody BlockDTO dto
+//    ) {
+//        Block block = BlockDTO.toDomainObject(dto);
+//        Block blockFromTable = service.create(block);
+//        return BlockDTO.toDto(blockFromTable);
+//    }
 
     // add new block
     @RequestMapping(
-            value = "/add_block/",
-            method = RequestMethod.POST
+            value = "/add_geotag",
+            method = RequestMethod.POST,
+            produces = "application/json"
     )
     public @ResponseBody
-    BlockDTO create(
-            @RequestBody String info
+    BlockDTO addGeotag(
+            @RequestBody PositionDTO positionDTO
     ) {
-        Block block = new Block();
-        block.setInfo(info);
-        block.setId(service.getLattestIndex());
-        // TODO
-        return BlockDTO.toDto(block);
+        Block block = ChainHelper.generateBlockFromPositionDto(service, positionDTO);
+        ChainHelper.mineBlock(block);
+        BlockDTO blockDTO = ChainHelper.addBlockToChainAndReturnBlockDto(service, block);
+        return blockDTO;
     }
+
+    // check validity
+    @RequestMapping(
+            value = "/check_validity",
+            method = RequestMethod.GET
+    )
+    public String checkChainValidity() {
+        return String.valueOf(ChainHelper.isValid(service));
+    }
+
+    // check guilty
+    @RequestMapping(
+            value = "/check_guilty",
+            method = RequestMethod.POST,
+            produces = "application/json"
+    )
+    public @ResponseBody
+    String checkGuilty(
+            @RequestBody PositionDTO positionDTO
+    ) {
+        return ChainHelper.isGuilty(service, positionDTO);
+    }
+
 
 }
+
+/*
+* /add_block {    "id":"4",   "hash":"4",   "previous_hash":"4",   "info":"4",   "nonce":"4"   }
+* /add_geotag  {   "position":"info" }
+* /check_guilty {   "position":"info" }
+* */
