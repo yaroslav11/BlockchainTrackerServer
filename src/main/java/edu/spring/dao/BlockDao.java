@@ -11,4 +11,6 @@ public interface BlockDao {
     void update(Block block);
 
     void delete(long id);
+
+    long getLatestIndex();
 }

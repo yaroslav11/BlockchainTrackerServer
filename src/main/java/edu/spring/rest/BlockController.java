@@ -53,20 +53,22 @@ public class BlockController {
         Block blockWithId = service.create(block);
         return BlockDTO.toDto(blockWithId);
     }
-//
-//    // add new block
-//    @RequestMapping(
-//            value = "/add_block/",
-//            method = RequestMethod.POST
-//    )
-//    public @ResponseBody
-//    BlockDTO addBlock(
-//            @RequestBody String info
-//    ) {
-//        Block block = Block.createNewBlockFromString(info);
-//        Block blockWithId = service.create(block);
-//        return BlockDTO.toDto(blockWithId);
-//    }
+
+    // add new block
+    @RequestMapping(
+            value = "/add_block/",
+            method = RequestMethod.POST
+    )
+    public @ResponseBody
+    BlockDTO create(
+            @RequestBody String info
+    ) {
+        Block block = new Block();
+        block.setInfo(info);
+        block.setId(service.getLattestIndex());
+        // TODO
+        return BlockDTO.toDto(block);
+    }
 
 
 //    @PutMapping("/account/{id}/holder")

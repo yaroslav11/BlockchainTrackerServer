@@ -37,4 +37,10 @@ public class BlockServiceImpl implements BlockService {
 //        account.setNonce(nonce);
 //        dao.update(account);
 //    }
+
+
+    @Override
+    public long getLattestIndex() {
+        return dao.getLatestIndex();
+    }
 }

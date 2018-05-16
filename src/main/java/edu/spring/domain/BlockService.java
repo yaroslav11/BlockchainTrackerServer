@@ -11,4 +11,6 @@ public interface BlockService {
 //    void changeMeta(long accountId, String hash, long nonce);
 
     void delete (long accountId);
+
+    long getLattestIndex();
 }

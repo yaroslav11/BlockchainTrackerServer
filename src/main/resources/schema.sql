@@ -1,6 +1,6 @@
 CREATE TABLE chain
 (
-  id INTEGER AUTO_INCREMENT,
+  id INTEGER NOT NULL UNIQUE,
   hash VARCHAR(260),
   previous_hash VARCHAR(260),
   info VARCHAR(260),

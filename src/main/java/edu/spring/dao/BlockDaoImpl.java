@@ -15,11 +15,13 @@ import java.util.Map;
 public class BlockDaoImpl implements BlockDao {
 
     private static final String SELECT_ACCOUNT_BY_ID =
-            "SELECT * FROM chain WHERE chain.id=:id";
+            "SELECT * FROM chain WHERE id=:id";
     private static final String UPDATE_ACCOUNT =
             "UPDATE chain SET hash=:hash, nonce=:nonce WHERE id=:id";
     private static final String DELETE_ACCOUNT =
             "DELETE FROM chain WHERE id=:id";
+    private static final String LATEST_INDEX =
+            "SELECT MAX(id) FROM chain ";
 
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcOperations namedJdbcTemplate;
@@ -49,6 +51,7 @@ public class BlockDaoImpl implements BlockDao {
     public Block insert(Block block) {
         Map<String, Object> params = new HashMap<>();
 
+        params.put("id", block.getId());
         params.put("hash", block.getHash());
         params.put("previous_hash", block.getPrevious_hash());
         params.put("info", block.getInfo());
@@ -56,7 +59,7 @@ public class BlockDaoImpl implements BlockDao {
 
         long newId = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("chain")
-                .usingGeneratedKeyColumns("id")
+//                .usingGeneratedKeyColumns("id")
                 .executeAndReturnKey(params).longValue();
         block.setId(newId);
         return block;
@@ -67,6 +70,8 @@ public class BlockDaoImpl implements BlockDao {
         Map<String, Object> params = new HashMap<>();
         params.put("id", block.getId());
         params.put("hash", block.getHash());
+        params.put("previous_hash", block.getPrevious_hash());
+        params.put("info", block.getInfo());
         params.put("nonce", block.getNonce());
         namedJdbcTemplate.update(UPDATE_ACCOUNT, params);
     }
@@ -75,4 +80,13 @@ public class BlockDaoImpl implements BlockDao {
     public void delete(long id) {
         namedJdbcTemplate.update(DELETE_ACCOUNT, Collections.singletonMap("id", id));
     }
+
+    @Override
+    public long getLatestIndex() {
+
+        return namedJdbcTemplate.query(
+                LATEST_INDEX, (resultSet, i) -> resultSet.getLong("id")
+        ).stream().findFirst().orElse(0L);
+    }
 }
+

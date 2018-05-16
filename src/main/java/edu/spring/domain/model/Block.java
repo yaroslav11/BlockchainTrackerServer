@@ -8,6 +8,14 @@ public class Block {
     private String info;
     private long nonce;
 
+    public Block() {
+        this.id = -1L;
+        this.hash = "-1";
+        this.previous_hash = "-1";
+        this.info = "-1";
+        this.nonce = -1L;
+    }
+
     public Block(long id, String hash, String previous_hash, String info, long nonce) {
         this.id = id;
         this.hash = hash;
@@ -62,9 +70,5 @@ public class Block {
 
     public void setNonce(long nonce) {
         this.nonce = nonce;
-    }
-
-    public static Block createNewBlockFromString(String info){
-        return new Block(-1L, "-1", "-1", info, -1L);
     }
 }
