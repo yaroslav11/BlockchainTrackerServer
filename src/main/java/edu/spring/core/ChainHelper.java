@@ -8,7 +8,7 @@ import edu.spring.rest.PositionDTO;
 import java.security.MessageDigest;
 
 public class ChainHelper {
-    private static int difficulty = 2;
+    private static int difficulty = 4;
 
     public static Block generateBlockFromPositionDto(BlockService service, PositionDTO positionDTO){
         long lattestIndex = service.getLattestIndex();
