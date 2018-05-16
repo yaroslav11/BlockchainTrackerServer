@@ -1,2 +1,2 @@
-INSERT INTO accounts (id, holder, balance) VALUES (1, 'Mike', 1300);
-INSERT INTO accounts (id, holder, balance) VALUES (2, 'Don', 2300);
+INSERT INTO chain (id, hash, previous_hash, info, nonce) VALUES (1, '1', '1', '1', 1);
+INSERT INTO chain (id, hash, previous_hash, info, nonce) VALUES (2, '2', '2', '2', 2);
