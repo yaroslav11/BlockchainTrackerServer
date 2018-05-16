@@ -70,14 +70,4 @@ public class BlockController {
         return BlockDTO.toDto(block);
     }
 
-
-//    @PutMapping("/account/{id}/holder")
-//    public void changeMeta(
-//        @PathVariable("id") long id,
-//        @RequestParam("hash") String hash,
-//        @RequestParam("nonce") long nonce
-//    ) {
-//        service.changeMeta(id, hash, nonce);
-//    }
-
 }

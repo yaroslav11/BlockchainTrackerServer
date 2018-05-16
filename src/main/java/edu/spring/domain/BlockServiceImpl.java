@@ -30,15 +30,6 @@ public class BlockServiceImpl implements BlockService {
         dao.delete(accountId);
     }
 
-//    @Override
-//    public void changeMeta(long accountId, String hash, long nonce) {
-//        Block account = dao.get(accountId);
-//        account.setHash(hash);
-//        account.setNonce(nonce);
-//        dao.update(account);
-//    }
-
-
     @Override
     public long getLattestIndex() {
         return dao.getLatestIndex();

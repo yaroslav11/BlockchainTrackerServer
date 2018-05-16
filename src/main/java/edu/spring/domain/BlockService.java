@@ -8,8 +8,6 @@ public interface BlockService {
 
     Block create(Block block);
 
-//    void changeMeta(long accountId, String hash, long nonce);
-
     void delete (long accountId);
 
     long getLattestIndex();
