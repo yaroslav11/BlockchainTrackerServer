@@ -87,7 +87,7 @@ public class BlockController {
             produces = "application/json"
     )
     public @ResponseBody
-    String checkGuilty(
+    Boolean checkGuilty(
             @RequestBody PositionDTO positionDTO
     ) {
         return ChainHelper.isGuilty(service, positionDTO);

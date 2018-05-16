@@ -44,8 +44,9 @@ public class ChainHelper {
         Block previousBlock;
         String hashTarget = getDificultyString(difficulty);
 //        String hashTarget = new String(new char[difficulty]).replace('\0', '0');
-        long minIndex = 4;
+        long minIndex = 1;
         long maxIndex = service.getLattestIndex();
+        if (maxIndex < minIndex) maxIndex = minIndex;
 
         //loop through blockchain to check hashes:
         for(long i=minIndex+1; i < maxIndex; i++) {
@@ -53,17 +54,14 @@ public class ChainHelper {
             previousBlock = service.get(i-1);
             //compare registered hash and calculated hash:
             if(!currentBlock.getHash().equals(calculatedHash(currentBlock))){
-//                System.out.println("Current Hashes not equal");
                 return false;
             }
             //compare previous hash and registered previous hash
             if(!previousBlock.getHash().equals(currentBlock.getPrevious_hash()) ) {
-//                System.out.println("Previous Hashes not equal");
                 return false;
             }
             //check if hash is solved
             if(!currentBlock.getHash().substring( 0, difficulty).equals(hashTarget)) {
-//                System.out.println("This block hasn't been mined");
                 return false;
             }
         }
@@ -71,17 +69,17 @@ public class ChainHelper {
     }
 
 
-    public static String isGuilty(BlockService service, PositionDTO positionDTO){
+    public static Boolean isGuilty(BlockService service, PositionDTO positionDTO){
         String suspectData = positionDTO.getPosition();
         if (!isValid(service)){
-            return "Blockchain is compromised (not valid)";
+            return false;//"Blockchain is compromised (not valid)";
         }
 
         if (service.checkExistenceByInfo(suspectData)) {
-            return "The person seems to be suspect...";
+            return true;//"The person seems to be suspect...";
         }
 
-        return "Person is not guilty))";
+        return false;//"Person is not guilty))";
     }
 
     //Applies Sha256 to a string and returns the result.
