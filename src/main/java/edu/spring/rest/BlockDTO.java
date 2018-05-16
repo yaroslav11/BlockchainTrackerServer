@@ -24,10 +24,6 @@ public class BlockDTO {
     private String info;
     private long nonce;
 
-//    private long id = -1;
-//    private String holder;
-//    private long balance;
-
     public BlockDTO() {
     }
 
@@ -38,12 +34,6 @@ public class BlockDTO {
         this.info = info;
         this.nonce = nonce;
     }
-
-    //    public BlockDTO(long id, String holder, long balance) {
-//        this.id = id;
-//        this.holder = holder;
-//        this.balance = balance;
-//    }
 
 
     public long getId() {

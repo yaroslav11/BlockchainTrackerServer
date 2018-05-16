@@ -63,4 +63,8 @@ public class Block {
     public void setNonce(long nonce) {
         this.nonce = nonce;
     }
+
+    public static Block createNewBlockFromString(String info){
+        return new Block(-1L, "-1", "-1", info, -1L);
+    }
 }
